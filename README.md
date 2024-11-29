@@ -1,115 +1,127 @@
 # Food Hazard Detection Challenge
-This repository contains solutions for the SemEval 2025 Task 9: Food Hazard Detection Challenge. The task involves classifying and detecting food hazards from incident reports using NLP. It includes two sub-tasks: predicting product and hazard categories (ST1) and detecting specific products and hazards (ST2).
 
-This project addresses the **Food Hazard Detection Challenge**, which involves benchmarking both basic and advanced machine learning algorithms to classify food hazards using textual data. Two types of text are used for classification: **short texts (titles)** and **long texts**. The ultimate goal is to identify hazard categories, hazard types, and product categories effectively.
+This assignment focuses on the **SemEval 2025 Task 9: Food Hazard Detection Challenge**, where the objective is to classify food hazard incidents based on text data. Specifically, the task involves predicting the **hazard category**, **product category**, **product**, and **hazard type** from both short texts (titles) and long texts (descriptions) provided in the dataset.
 
----
+We will explore and apply various machine learning models, ranging from basic to advanced, to analyze and classify the data. The models will be evaluated and compared based on their performance, and the best-performing approach will be selected for generating final predictions.
 
-## Objectives
+The end goal is to submit the predictions, along with the models, evaluation metrics, and competition ranking.
 
-1. Perform **benchmark analysis** using:
-   - Basic Machine Learning models.
-   - Advanced Machine Learning models (XLM-RoBERTa).
-2. Evaluate the impact of using short texts (**titles**) versus long texts (**detailed descriptions**) for classification.
-3. Analyze the best algorithms for predicting:
-   - Hazard Categories
-   - Hazard Types
-   - Product Categories
-   - Product Types
 
----
+## Installation of Required Packages
 
-## Methodology
+To install all the necessary packages for this project, you can run the following command. It's recommended to create and activate a virtual environment first:
 
-### Classify Hazard Categories Using Titles
-- **Features Used**: Title column.
-- **Models Benchmarked**:
-  - Logistic Regression
-  - Naive Bayes
-  - Support Vector Machines (SVM)
-  - Random Forest
-  - Gradient Boosting
-  - K-Nearest Neighbors (KNN)
-- **Evaluation Metrics**: Accuracy, Precision, Recall, and F1 score.
-- **Process**:
-  - Train basic models.
-  - Use **GridSearchCV** for hyperparameter tuning.
-  - Compare performance between default and tuned models.
+```bash
+pip install pandas numpy matplotlib seaborn wordcloud scikit-learn torch transformers datasets evaluate
+```
 
-### Classify Hazard Categories Using Long Texts
-- **Features Used**: Text column.
-- **Objective**: Compare the performance of models trained on the richer, more detailed text column versus the title column.
+## Installation Using `requirements.txt`
 
-### Classify Hazard Types
-- **Objective**: Use the best-performing model from previous experiments to predict hazard types (128 unique labels) using titles and long texts.
+```bash
+pip install -r requirements.txt
+```
 
-### Classify Product Categories and Types
-- **Objective**: Predict the **product category** (22 unique labels) and **product type** using the same process as above.
+## Data Exploration and Preprocessing
 
-### Advanced Benchmark Analysis
-- Evaluate **XLM-RoBERTa**, a transformer-based model, for hazard and product classification:
-  - Train models on both the title and text columns.
-  - Perform hyperparameter tuning.
-  - Compare the results with basic ML models.
+Next step, is to load and explore the provided dataset to better understand its structure and quality. Key tasks include:
 
----
+1. **Data Loading and Inspection**:
+   - Load the dataset and inspect its contents (e.g., columns, sample data).
+   - Check the data types of each column and ensure they are appropriate for the task.
 
-## Results
+2. **Missing Data Handling**:
+   - Identify and handle any missing or null values in the dataset. This could involve imputation, removal, or other strategies depending on the extent and importance of the missing data.
 
-### Subtask 1
-| Category         | Algorithm Type | Algorithm Name       | Best Column | F1 Score |
-|------------------|----------------|----------------------|-------------|----------|
-| Hazard Category  | Basic          | Logistic Regression  | Title       | 0.68     |
-| Product Category | Basic          | Logistic Regression  | Title       | 0.62     |
+3. **Label Distribution Analysis**:
+   - Analyze the distribution of the target labels (hazard categories, products, etc.).
+   - Check for any class imbalances that could affect model performance. This can be addressed by techniques like oversampling, undersampling, or using weighted loss functions.
 
-### Subtask 2
-| Category       | Algorithm Type | Algorithm Name       | Best Column | F1 Score |
-|----------------|----------------|----------------------|-------------|----------|
-| Hazard Type    | Basic          | Logistic Regression  | Text        | 0.41     |
-| Product Type   | Basic          | Logistic Regression  | Title       | 0.24     |
+4. **Data Visualization**:
+   - Visualize the distribution of labels, text lengths, or other relevant features using plots (e.g., histograms, bar plots, word clouds).
+   - Comment on the findings, identifying any potential challenges or patterns that could guide the modeling process.
 
-- **Logistic Regression** consistently outperformed other models in both subtasks.
+5. **Data Cleaning**:
+   - Clean and preprocess text data, such as removing stopwords, punctuation, and other irrelevant characters.
 
----
+6. **Preprocessing Strategy**:
+   - Based on the data exploration findings, create a preprocessing strategy that includes:
+     - Tokenization of text data.
+     - Vectorization techniques (e.g., TF-IDF, word embeddings).
+     - Handling imbalanced classes (if applicable).
+     - Data normalization or scaling, if required for specific models.
 
-## Key Findings
+## Benchmark Analysis 1: Basic Machine Learning Algorithms
 
-1. **Model Performance**:
-   - Logistic Regression achieved the best results for most tasks, especially after hyperparameter tuning.
-   - Advanced models (e.g., XLM-RoBERTa) will be benchmarked in subsequent analyses to validate improvements.
+The benchmark analysis involves classifying food hazard data using machine learning models, starting with the **hazard category** prediction. We will:
 
-2. **Impact of Text Features**:
-   - Using long text generally improved performance for hazard classification but showed mixed results for product classification.
+1. **Classify by Hazard Category (Using Titles)**:
+   - Begin with the **title** column, applying basic machine learning models like Logistic Regression, Naive Bayes, SVM, and others.
+   - Evaluate models using **accuracy**, **precision**, **recall**, and **F1 score**.
 
-3. **Evaluation Metrics**:
-   - Macro F1 score was the preferred metric, as it accounted for label imbalances better than accuracy.
+2. **Classify by Hazard Category (Using Full Text)**:
+   - Extend the analysis to the **text** column for more context and improved model performance.
+   - Compare the results with those from the title-based models.
 
----
+3. **Classify by Hazard**:
+   - Predict **hazard types** using the best-performing model from the previous steps.
 
-## Running the Notebook
+4. **Classify by Product Category**:
+   - Predict **product category** using both **title** and **text** columns, and compare performance across models like we did with the Hazard Category.
 
-### Prerequisites
-Ensure the following software and packages are installed:
-- Python 3.8 or later
-- Jupyter Notebook
-- Required Python libraries (install via `pip install package`):
-- numpy
-- pandas
-- scikit-learn
-- matplotlib
-- seaborn
-- sklearn
-- wordcloud import WordCloud
-- evaluate
-- torch
-- transformers import AutoTokenizer, AutoModelForSequenceClassification
-- datasets import Dataset, ClassLabel
 
-  
+## Benchmark Analysis 2: Advanced Machine Learning with XLM-RoBERTa
 
-### Instructions
+In **Benchmark Analysis 2**, we will explore **XLM-RoBERTa**, a transformer model, to predict hazard and product categories/types, building on the basic ML models from Benchmark Analysis 1.
 
-1. **Clone or Download Repository**:
-   ```bash
-   git clone <repository_url>
-   cd <repository_folder>
+### Steps:
+
+1. **Establish Baseline**: Train XLM-RoBERTa on both **title** and **text** columns to predict **hazard category** and compare performance.
+2. **Column Selection**: Determine which column (title vs. text) yields better results for hazard category prediction.
+3. **Hyperparameter Tuning**: Fine-tune the model to improve performance.
+4. **Repeat for Product Prediction**: Apply the same process to predict **product category** and **product type**.
+5. **Final Model Comparison**: Compare **XLM-RoBERTa** with basic ML models to select the best-performing model for the final predictions.
+
+
+## Benchmark Analysis Results
+
+### **Benchmark Analysis #1: Basic Machine Learning Models**
+
+| Features | Best Algorithm         | Target           | Macro F1 Score |
+|----------|------------------------|------------------|----------------|
+| Title    | Tuned Logistic Regression | Hazard Category | 0.68           |
+| Title    | Tuned Logistic Regression | Hazard Type     | 0.37           |
+| Title    | Tuned Logistic Regression | Product Category| 0.62           |
+| Title    | Tuned Logistic Regression | Product Type    | 0.24           |
+| Text     | Tuned Logistic Regression | Hazard Category | 0.63           |
+| Text     | Tuned Logistic Regression | Hazard Type     | 0.41           |
+| Text     | Tuned Logistic Regression | Product Category| 0.57           |
+| Text     | Tuned Logistic Regression | Product Type    | 0.20           |
+
+### **Benchmark Analysis #2: Advanced Transformer Models (XLM-RoBERTa)**
+
+| Features | Algorithm     | Tuning | Target          | Macro F1 Score |
+|----------|---------------|--------|-----------------|----------------|
+| Title    | XLM-RoBERTa   | Vanilla| Hazard Category | 0.18           |
+| Text     | XLM-RoBERTa   | Vanilla| Hazard Category | 0.26           |
+| Text     | XLM-RoBERTa   | Tuned | Hazard Category | 0.65           |
+| Title    | XLM-RoBERTa   | Tuned | Hazard Type     | 0.13           |
+| Text     | XLM-RoBERTa   | Tuned | Hazard Type     | 0.16           |
+| Title    | XLM-RoBERTa   | Vanilla| Product Category| 0.03           |
+| Text     | XLM-RoBERTa   | Vanilla| Product Category| 0.02           |
+| Title    | XLM-RoBERTa   | Tuned | Product Category| 0.34           |
+| Title    | XLM-RoBERTa   | Tuned | Product Type    | 0.0004         |
+| Text     | XLM-RoBERTa   | Tuned | Product Type    | 0.0019         |
+
+### **Best Candidates for Sub Task 1 (Hazard & Product Classification)**
+
+| Prediction Category | Best Algorithm Type | Best Algorithm Name | Best Feature | Macro F1 Score |
+|---------------------|---------------------|---------------------|--------------|----------------|
+| Hazard Category     | Basic               | Tuned Logistic Regression | Title    | 0.68           |
+| Product Category    | Basic               | Tuned Logistic Regression | Title    | 0.62           |
+
+### **Best Candidates for Sub Task 2 (Hazard & Product Type Classification)**
+
+| Prediction Category | Best Algorithm Type | Best Algorithm Name | Best Feature | Macro F1 Score |
+|---------------------|---------------------|---------------------|--------------|----------------|
+| Hazard Type         | Basic               | Tuned Logistic Regression | Text     | 0.41           |
+| Product Type        | Basic               | Tuned Logistic Regression | Title    | 0.24           |
